@@ -1,0 +1,25 @@
+// Bootstrap icons
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+// Fonts
+// font-family: 'Philosopher', sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Philosopher:wght@700&display=swap');
+
+@import "constants";
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+body {
+  font: $f-text;
+  background-color: #f2f2f2;
+}
