@@ -1,11 +1,11 @@
 <div class="container">
 <section class="side border">
   <app-side-header-icons></app-side-header-icons>
-  <app-customers-list></app-customers-list>
+  <app-customers-list (emitActiveUser)="activeUser=$event"></app-customers-list>
   <div class="history">History</div>
 </section>
-<section class="main">
-  <app-user-panel class="grid-user-panel"></app-user-panel>
-  <app-chat class="grid-chat"></app-chat>
+<section *ngIf="activeUser" class="main">
+  <app-user-panel class="grid-user-panel" [user]="activeUser"></app-user-panel>
+  <app-chat class="grid-chat" [user]="activeUser"></app-chat>
 </section>
 </div>

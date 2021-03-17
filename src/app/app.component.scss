@@ -12,33 +12,27 @@ $rest-height: calc(100vh - (header-height + 10px));
 .w-100 {
   width: 100%;
 }
-
 .flex-row {
   display: flex;
   align-items: center;
 }
-
 .iflex-column {
   display: inline-flex;
   flex-direction: column;
 }
-
 .flex-column {
   display: flex;
   flex-direction: column;
 }
-
 .border-b {
   border-bottom: 2px solid #e0dada;
 }
 .border {
   border: 2px solid #e0dada;
 }
-
 .hidden {
   display: none;
 }
-
 .user-icon {
   border-radius: 50%;
   background-color: $c-accent;
@@ -46,7 +40,6 @@ $rest-height: calc(100vh - (header-height + 10px));
   color: $c-prime;
   margin: 0 10px;
 }
-
 .container {
   display: grid;
   height: 100vh;
@@ -57,57 +50,6 @@ $rest-height: calc(100vh - (header-height + 10px));
   grid-gap: 10px 0;
   margin: 0;
 }
-
-.side {
-  grid-area: side;
-  margin: 0 10px 10px 10px;
-  background-color: #fff;
-  position: relative;
-
-  .history {
-    height: 60px;
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    text-align: left;
-    padding: 15px 0 0 10px;
-    border-top: 2px solid #e0dada;
-
-    &:before {
-      content: '';
-      margin: 0 auto;
-      display: block;
-      text-align: center;
-      width: 30px;
-      border-bottom: 2px solid black;
-    }
-  }
-
-}
-
-.main {
-  grid-area: main;
-  display: grid;
-  height: 100%;
-  margin: 0;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto 1fr;
-  grid-gap: 0;
-  grid-template-areas:
-  "user-panel user-panel"
-  "chat empty";
-
-  .grid-chat {
-    grid-area: chat;
-    margin: 10px 0;
-  }
-  .grid-user-panel {
-    grid-area: user-panel;
-  }
-
-}
-
 
 header {
   display: flex;
@@ -214,6 +156,59 @@ header {
     }
   }
 }
+
+.side {
+  grid-area: side;
+  margin: 0 10px 10px 10px;
+  background-color: #fff;
+  position: relative;
+
+  .history {
+    height: 60px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    text-align: left;
+    padding: 15px 0 0 10px;
+    border-top: 2px solid #e0dada;
+
+    &:before {
+      content: '';
+      margin: 0 auto;
+      display: block;
+      text-align: center;
+      width: 30px;
+      border-bottom: 2px solid black;
+    }
+  }
+
+}
+
+.main {
+  grid-area: main;
+  display: grid;
+  height: 100%;
+  margin: 0;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  grid-gap: 0;
+  grid-template-areas:
+  "user-panel user-panel"
+  "chat empty";
+
+  .grid-chat {
+    grid-area: chat;
+    margin: 10px 0;
+  }
+  .grid-user-panel {
+    grid-area: user-panel;
+  }
+
+}
+
+
+
 
 
 

@@ -16,6 +16,7 @@ import { ChatComponent } from './components/chat/chat.component';
 import { CustomerDetailsComponent } from './components/customer-details/customer-details.component';
 import { WorkzoneComponent } from './components/workzone/workzone.component';
 import { HomepageComponent } from './components/home/homepage/homepage.component';
+import { CustomerItemComponent } from './components/customers-list/customer-item/customer-item.component';
 
 
 
@@ -30,6 +31,7 @@ import { HomepageComponent } from './components/home/homepage/homepage.component
     CustomerDetailsComponent,
     WorkzoneComponent,
     HomepageComponent,
+    CustomerItemComponent,
   ],
   imports: [
     BrowserModule,

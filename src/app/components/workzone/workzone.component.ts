@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./workzone.component.scss']
 })
 export class WorkzoneComponent implements OnInit {
+  public activeUser;
 
   constructor() { }
 

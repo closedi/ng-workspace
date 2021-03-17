@@ -1,0 +1,57 @@
+@import "src/app/app.component";
+
+
+.customer__icon {
+  height: auto;
+  width: auto;
+  padding: 12px 15px;
+  margin: 10px 15px;
+  border-radius: 50%;
+  background-color: rgb(241 241 241);
+
+
+  & i {
+    font-size: 25px;
+    position: relative;
+    color: gray;
+
+    &:after {
+      content: '✓';
+      color: #ffffff;
+      text-align: start;
+      line-height: 0.7rem;
+      display: block;
+      position: absolute;
+      top: 2px;
+      right: 0;
+      font-size: 10px;
+      border-radius: 50%;
+      background-color: black;
+      width: 10px;
+      height: 10px;
+      z-index: 2;
+    }
+  }
+}
+
+.customer__info {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  line-height: 1.5rem;
+
+  .iflex-column {
+    width: 70%;
+  }
+
+  .info__phone {
+    font: $f-small;
+    color: gray;
+  }
+
+  .info__duration {
+    justify-self: flex-end;
+    margin: auto;
+    font-size: .8rem;
+  }
+}

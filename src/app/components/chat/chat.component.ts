@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'app-chat',
@@ -10,6 +10,8 @@ export class ChatComponent implements OnInit, AfterViewInit {
   @ViewChild('focus') element: ElementRef;
 
   constructor() {}
+
+  @Input() public user;
 
   ngOnInit(): void {
   }

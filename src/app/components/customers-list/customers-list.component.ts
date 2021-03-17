@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import {UsersService} from '../../services/users.service';
 
 @Component({
@@ -6,35 +6,29 @@ import {UsersService} from '../../services/users.service';
   templateUrl: './customers-list.component.html',
   styleUrls: ['./customers-list.component.scss']
 })
-export class CustomersListComponent implements OnInit, AfterViewInit{
-  public customers;
+export class CustomersListComponent implements OnInit{
+  public activeUser = false;
+  public users;
   public isChosen = {
     state: false,
     id: null,
   };
 
-  @ViewChild('ref') element: ElementRef;
+  constructor(public usersService: UsersService) {}
 
-  constructor(public userS: UsersService) {
-  }
+  @Output() public emitActiveUser = new EventEmitter();
 
   ngOnInit(): void {
-   this.customers = this.userS.get();
+   this.users = this.usersService.get();
  }
 
- ngAfterViewInit(): void {
-    console.log(this.element.nativeElement);
- }
-
-  chooseChat(ev): void {
-    if (!this.isChosen.state) {
-      this.isChosen.state = !this.isChosen.state;
-      this.isChosen.id = 1;
-      ev.target.closest('.customer__row').classList.add('active');
+  onClick(user) {
+    if (user === this.activeUser) {
+      this.activeUser = false;
+      this.emitActiveUser.emit(this.activeUser);
     } else {
-      this.isChosen.state = !this.isChosen.state;
-      ev.target.closest('.customer__row').classList.remove('active');
+      this.emitActiveUser.emit(user);
+      return this.activeUser = user;
     }
   }
-
 }
