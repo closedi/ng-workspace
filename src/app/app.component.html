@@ -12,9 +12,9 @@
     </div>
     <div class="header-right">
       <nav class="nav__menu">
-        <a href="#" class="nav__item"><i class="bi bi-house"></i></a>
+        <a class="nav__item"><i class="bi bi-house" routerLink="/home"></i></a>
         <a href="#" class="nav__item"><i class="bi bi-gear"></i></a>
-        <a href="#" class="nav__item"><i class="bi bi-headset"></i></a>
+        <a class="nav__item"><i class="bi bi-headset" routerLink="/chat"></i></a>
         <a href="#" class="nav__item"><i class="bi bi-bell"></i></a>
         <a href="#" class="nav__item"><i class="bi bi-question-circle"></i></a>
       </nav>
@@ -34,95 +34,5 @@
       </div>
     </div>
   </header>
-    <section class="side border">
-      <app-side-header-icons></app-side-header-icons>
-      <div class="flex-column">
-        <div class="customer__row border-b">
-          <div class="customer__icon">
-            <i class="bi bi-chat-left"></i>
-          </div>
-          <div class="customer__info">
-            <div class="iflex-column">
-            <p class="info__name">Lorem ipsum dolor.</p>
-            <p class="info__phone">1234567890</p>
-            </div>
-            <span class="info__duration">00:14</span>
-          </div>
-        </div>
-      </div>
-      <div class="history">History</div>
-    </section>
-    <section class="main">
-      <div class="user-panel border">
-          <div class="user-panel__top">
-          <div class="user-panel__info">
-            <div class="user-icon">TR</div>
-              <div class="iflex-column">
-                <p class="info__name">Lorem ipsum dolor.</p>
-                <p class="info__phone">1234567890</p>
-              </div>
-          </div>
-          <div class="user-panel__controls">
-            <button class="button close">x</button>
-            <button class="button change ">
-              <i class="bi bi-arrow-left-right"></i>
-            </button>
-            <button class="button more">
-              <i class="bi bi-three-dots"></i>
-            </button>
-            <p class="info__duration">00:13</p>
-          </div>
-          </div>
-        <div class="user-panel__labels">
-          <div class="label">
-            <i class="bi bi-person-lines-fill"></i>
-            <div class="label__text">Customer details</div>
-          </div>
-          <div class="label">
-            <i class="bi bi-chat"></i>
-            <div class="label__text">Chat</div>
-          </div>
-        </div>
-      </div>
-      <section class="chat border">
-        <div class="header">
-          <div>
-            <i class="bi bi-chat"></i>
-            <span>Chat</span>
-          </div>
-          <div>
-            <i class="bi bi-headset"></i>
-            <span class="count">2</span>
-          </div>
-        </div>
-        <div class="chat__body border-b">
-          <div class="name">Tom Ripley</div>
-          <div class="message-list">
-            <div class="message-list__item received">
-              <div class="user-icon">TR</div>
-              <div class="flex-column w-100">
-                <div class="item__info">123 123 <span>some time</span></div>
-                <div class="item__text">456</div>
-              </div>
-            </div>
-            <div class="message-list__item sent">
-              <div class="flex-column w-100">
-                <div class="item__info">123 123 <span>some time</span></div>
-                <div class="item__text">456</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="chat__input">
-          <p class="last-message border-b">last message received at <span class="time">2:49 pm</span></p>
-          <div class="flex-row">
-            <input type="text" class="textarea" placeholder="Type a message...">
-            <button class="input-send flex-row">
-              <i class="bi bi-telegram"></i>
-              <p>Send</p>
-            </button>
-          </div>
-        </div>
-      </section>
-    </section>
+  <router-outlet></router-outlet>
 </div>

@@ -1,0 +1,40 @@
+<section class="chat border">
+  <div class="header">
+    <div>
+      <i class="bi bi-chat"></i>
+      <span>Chat</span>
+    </div>
+    <div>
+      <i class="bi bi-headset"></i>
+      <span class="count">2</span>
+    </div>
+  </div>
+  <div class="chat__body border-b">
+    <div class="name">Tom Ripley</div>
+    <div class="message-list">
+      <div class="message-list__item received">
+        <div class="user-icon">TR</div>
+        <div class="flex-column w-100">
+          <div class="item__info">123 123 <span>some time</span></div>
+          <div class="item__text">456</div>
+        </div>
+      </div>
+      <div class="message-list__item sent">
+        <div class="flex-column w-100">
+          <div class="item__info">123 123 <span>some time</span></div>
+          <div class="item__text">456</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="chat__input">
+    <p class="last-message border-b">last message received at <span class="time">2:49 pm</span></p>
+    <div class="flex-row">
+      <input #focus type="text" class="textarea" placeholder="Type a message..." [(ngModel)]="userInput" (keyup)="inputHandle($event)">
+      <button class="input-send flex-row" (click)="inputHandle($event)">
+        <i class="bi bi-telegram"></i>
+        <p>Send</p>
+      </button>
+    </div>
+  </div>
+</section>

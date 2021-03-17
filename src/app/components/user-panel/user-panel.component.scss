@@ -1,0 +1,99 @@
+@import "src/app/app.component";
+
+.user-panel {
+  grid-area: user-panel;
+  background-color: #fff;
+
+  .user-panel__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .user-panel__info {
+      display: flex;
+      flex-direction: row;
+      padding: 15px;
+
+      .user-icon {
+        padding: 10px;
+        width: 40px;
+        height: 40px;
+      }
+
+      .info__name {
+        font: $f-bold;
+        font-size: 1rem;
+      }
+
+      .info__phone {
+        color: gray;
+        font-size: .8rem;
+      }
+    }
+
+    .user-panel__controls {
+      display: flex;
+      background-color: #f2f2f2;
+      padding: 10px 5px;
+      margin-right: 10px;
+      border-radius: 15px;
+
+      .button {
+        width: 40px;
+        height: 40px;
+        margin: 0 3px;
+        background-color: white;
+        border: none;
+
+        &.close {
+          margin: 0 15px 0 15px;
+          background-color: #d93d32;
+          color: white;
+          font: 1rem sans-serif;
+        }
+      }
+
+
+      .info__duration {
+        display: inline-block;
+        align-self: center;
+        font-weight: 800;
+        margin: 0 15px 0 15px;
+      }
+    }
+  }
+
+  .user-panel__labels {
+
+    .label {
+      padding: 0 10px 10px 10px;
+      display: inline-block;
+      font-size: 0.9rem;
+      cursor: pointer;
+      position: relative;
+      &:not(:nth-of-type(1)) {
+        margin-left: 10px;
+      }
+
+      &:hover {
+        color: $c-accent;
+        text-shadow: 0 0 1px $c-accent;
+
+        &:after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          background-color: $c-accent;
+        }
+      }
+
+      .label__text {
+        display: inline-block;
+        margin-left: 5px;
+      }
+    }
+  }
+}

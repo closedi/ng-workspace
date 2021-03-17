@@ -1,0 +1,18 @@
+@import "src/app/app.component.scss";
+
+.container {
+  display: grid;
+  height: calc(100vh - 75px);
+  grid-template-columns: auto 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas:
+    "side main";
+  margin: 0;
+
+  .side {
+    grid-area: side;
+  }
+  .main {
+    grid-area: main;
+  }
+}
