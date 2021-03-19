@@ -9,27 +9,26 @@
       <span class="count">2</span>
     </div>
   </div>
-  <div class="chat__body border-b">
-    <div class="name">{{user.name}}</div>
+  <div class="chat__body" (keyup)="inputHandle($event)">
+    <div class="name">{{(activeChat$ | async).name}}</div>
     <div class="message-list">
       <div class="message-list__item received">
-        <div class="user-icon">TR</div>
+        <div class="user-icon">{{abbr}}</div>
         <div class="flex-column w-100">
-          <div class="item__info">{{user.name}}<span> 12:21</span></div>
-          <div class="item__text">456</div>
+          <div class="item__text">{{(activeChat$ | async).firstMessage}}</div>
+          <div class="item__info">{{(activeChat$ | async).name}}<span> {{(activeChat$ | async).time | date: 'shortTime' }}</span></div>
         </div>
       </div>
-      <div class="message-list__item sent">
+      <div *ngFor="let message of messages" class="message-list__item sent">
         <div class="flex-column w-100">
-          <div class="item__info">123 123 <span> some time</span></div>
-          <div class="item__text">456</div>
+          <div class="item__text">{{message}}</div>
+          <div class="item__info">You<span>now</span></div>
         </div>
       </div>
     </div>
   </div>
   <div class="chat__input">
-    <p class="last-message border-b">last message received at <span class="time">2:49 pm</span></p>
-    <div class="flex-row">
+    <div class="chat__input_row">
       <input #focus type="text" class="textarea" placeholder="Type a message..." [(ngModel)]="userInput" (keyup)="inputHandle($event)">
       <button class="input-send flex-row" (click)="inputHandle($event)">
         <i class="bi bi-telegram"></i>

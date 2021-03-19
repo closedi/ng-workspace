@@ -1,14 +1,14 @@
 <div class="user-panel border">
   <div class="user-panel__top">
     <div class="user-panel__info">
-      <div class="user-icon">TR</div>
+      <div class="user-icon">{{abbr}}</div>
       <div class="iflex-column">
-        <p class="info__name">{{user.name}}</p>
-        <p class="info__phone">{{user.phone}}</p>
+        <p class="info__name">{{(activeChat$ | async).name}}</p>
+        <p class="info__phone">{{(activeChat$ | async).phone}}</p>
       </div>
     </div>
     <div class="user-panel__controls">
-      <button class="button close">x</button>
+      <button class="button close" (click)="deleteCurrentChat()">x</button>
       <button class="button change ">
         <i class="bi bi-arrow-left-right"></i>
       </button>

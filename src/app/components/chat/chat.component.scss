@@ -26,7 +26,6 @@
 
     .chat__body {
       height: 100%;
-      overflow-y: hidden;
 
       .name {
         display: inline-block;
@@ -49,18 +48,22 @@
       }
 
       .message-list {
-        height: 100%;
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
-        overflow-y: hidden;
+        flex: 1 0 auto;
+        /* Hack */
+        max-height: 65vh;
+        width: 100%;
+        overflow-y: auto;
+        margin: 5px 0 5px 0;
 
         .message-list__item {
           display: flex;
           flex-direction: row;
           align-items: center;
           padding: 10px;
-          width: 60%;
+          max-width: 60%;
+          word-wrap: break-word;
 
           &.received {
             align-items: flex-end;
@@ -70,19 +73,21 @@
             flex-direction: column;
             align-self: flex-end;
             justify-content: flex-end;
+            padding-right: 20px;
 
             .item__info {
+              font-size: .8rem;
               align-self: flex-end;
-              margin: 15px 15px 5px 5px;
             }
             .item__text {
               text-align: right;
-              border-radius: 10px 0 10px 10px;
+              border-radius: 10px 10px 0 10px;
             }
           }
 
           .item__info {
-            margin: 15px 5px 5px 15px;
+            align-self: flex-start;
+            font-size: .8rem;
 
             span {
               font-weight: bold;
@@ -90,10 +95,9 @@
           }
 
           .item__text {
-            width: 100%;
             padding: 10px;
             background-color: #f2f2f2;
-            border-radius: 0 10px 10px 10px;
+            border-radius: 10px 10px 10px 0;
           }
         }
 
@@ -115,15 +119,14 @@
   }
 
   .chat__input {
+    border-top: 2px solid #e0dada;
+    height: 60px;
 
-    .last-message {
-      font-size: 0.9rem;
-      padding-left: 10px;
+  .chat__input_row {
+    display: flex;
+    height: 100%;
+  }
 
-      span {
-        font-weight: bold;
-      }
-    }
 
     .textarea {
       width: 100%;

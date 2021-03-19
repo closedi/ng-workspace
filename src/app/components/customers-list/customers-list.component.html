@@ -1,9 +1,8 @@
 <div class="flex-column">
-<div *ngFor="let user of users">
+<div *ngFor="let user of users$ | async">
    <app-customer-item class="customer__row border-b"
-                      [class.active]="(activeUser.name === user.name)"
+                      [class.active]=""
                       [user]="user"
-                      [activeUser]="activeUser"
                       (click)="onClick(user)">
    </app-customer-item>
 </div>

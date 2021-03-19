@@ -4,9 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {AppRoutingModule} from './modules/app-routing.module';
-import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import {environment} from '../environments/environment';
+
 // Components
 import { AppComponent } from './app.component';
 import { SideHeaderIconsComponent } from './components/side-header-icons/side-header-icons.component';
@@ -17,6 +15,12 @@ import { CustomerDetailsComponent } from './components/customer-details/customer
 import { WorkzoneComponent } from './components/workzone/workzone.component';
 import { HomepageComponent } from './components/home/homepage/homepage.component';
 import { CustomerItemComponent } from './components/customers-list/customer-item/customer-item.component';
+
+// Store
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import {environment} from '../environments/environment';
+import {activeChatReducer, messageQueueReducer, usersQueueReducer} from './store/app.reducers';
 
 
 
@@ -39,9 +43,9 @@ import { CustomerItemComponent } from './components/customers-list/customer-item
     HttpClientModule,
     AppRoutingModule,
     StoreModule.forRoot({
-      // isOpen: isOpenReducer,
-      // chatState: chatStateReducer,
-      // messageQueue: messageQueueReducer,
+      messageQueue: messageQueueReducer,
+      usersQueue: usersQueueReducer,
+      activeChat: activeChatReducer,
     }, {}),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
   ],

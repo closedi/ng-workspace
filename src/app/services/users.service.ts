@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
 export interface User {
   id?: number;
@@ -21,6 +22,7 @@ export interface User {
   providedIn: 'root'
 })
 export class UsersService {
+  public userName$: Observable<string>;
   public url = 'https://jsonplaceholder.typicode.com/users';
   private httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -29,15 +31,21 @@ export class UsersService {
   constructor(private http: HttpClient) {
   }
 
-  get(): User[] {
+  getUser(): User[] {
     const result: User[] = [];
     this.http.get<User[]>(this.url).subscribe(value => {
-        for (let i = value.length - 1; i > value.length - 4; i--) {
+        for (let i = 0; i < value.length; i++) {
           result.push(value[i]);
         }
         return result;
       }
     );
+    return result;
+  }
+
+  delete(name): string {
+    const result = '';
+    this.userName$.subscribe();
     return result;
   }
 }

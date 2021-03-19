@@ -9,6 +9,9 @@ $rest-height: calc(100vh - (header-height + 10px));
   color: $c-accent;
   cursor: pointer;
 }
+.h-100 {
+  height: 100%;
+}
 .w-100 {
   width: 100%;
 }

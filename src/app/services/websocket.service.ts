@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
-// import {push} from '../store/app.actions';
+import {getUsers, push} from '../store/app.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -18,9 +18,16 @@ export class WebsocketService {
 
   init(): void {
     this.ws = new WebSocket(this.url);
-
     this.ws.onmessage = (event) => {
-      // this.store.dispatch(push({message: {type: 'RECEIVED', message: event.data, time: Date.now()}}));
+      const message = JSON.parse(event.data);
+      this.store.dispatch(getUsers({message}));
+    };
+  }
+
+  storePushInit(): void {
+      this.ws.onmessage = (event) => {
+        const message = JSON.parse(event.data);
+        this.store.dispatch(push({message: {type: 'RECEIVED', name: message.name, message: message.message, time: Date.now()}}));
     };
   }
 

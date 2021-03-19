@@ -1,5 +1,32 @@
 const ws = require('ws');
 
+const https = require('https');
+const usersUrl = 'https://jsonplaceholder.typicode.com/users';
+let users;
+
+const request = new Promise((resolve, reject) => {
+  let usersArray;
+  https.get(usersUrl, (response) => {
+    let data = '';
+
+    response.on("data", (chunk => data += chunk))
+
+    response.on("end", () => {
+    resolve(JSON.parse(data))
+   })
+
+    response.on("error", () => reject('error'))
+  });
+});
+
+request
+  .then((value) => {
+  users = value;
+  console.log(users)
+})
+  .catch(err => console.log(err))
+  .then(() => webSocket())
+
 const wss = new ws.Server({port: 8333});
 
 const SAMUEL_JACKSON_RESPONSES = [
@@ -20,16 +47,35 @@ const SAMUEL_JACKSON_RESPONSES = [
   'And You Will Know My Name Is The Lord When I Lay My Vengeance Upon You!'
 ];
 
-wss.on('connection', ws => {
-  ws.on('message', processMessage);
+const CUSTOMER_SAYS = [
+  'I have a problem with my car',
+  'Please help!! Everything is on fire!!',
+  'Could u specify it?',
+  'It\'s all, thanks',
+]
 
-  ws.on('close', () => {
-    ws.off('message', processMessage);
+function randomMessage(of_times) {
+  return CUSTOMER_SAYS[Math.round(Math.random() * of_times)]
+}
+
+function currentMessages() {
+  users.map((user) => user.firstMessage = randomMessage(3))
+  return JSON.stringify(users);
+}
+
+function webSocket() {
+  wss.on('connection', ws => {
+    ws.send(currentMessages());
+    ws.on('message', processMessage);
+    ws.on('close', () => {
+      ws.off('message', processMessage);
+    });
+    function processMessage(message) {
+      const messageParsed = JSON.parse(message);
+      const responseMessage = JSON.stringify({info: messageParsed, message:randomMessage(3)})
+      ws.send(responseMessage);
+    }
   });
+}
 
-  function processMessage(id, message) {
-    const responseMessage = SAMUEL_JACKSON_RESPONSES[Math.round(Math.random() * 14)];
 
-    ws.send(responseMessage);
-  }
-});
