@@ -1,7 +1,8 @@
-import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UsersService} from '../../services/users.service';
 import {Store} from '@ngrx/store';
-import {activateChat, deactivateChat} from '../../store/app.actions';
+import {activateChat, deactivateChat, push, pushMessage, pushMessagesOnHold, reset, resetMessages} from '../../store/app.actions';
+import {Message} from '../../../message';
 
 @Component({
   selector: 'app-customers-list',
@@ -9,34 +10,51 @@ import {activateChat, deactivateChat} from '../../store/app.actions';
   styleUrls: ['./customers-list.component.scss']
 })
 export class CustomersListComponent implements OnInit{
-  public isActive = false;
-  public usersInfo;
-  public activeUserInfo;
-  public activeUser = false;
+  private cloneDeep = require('lodash.clonedeep');
+  public messageQueue: Message[] = [];
+  public messageQueue$;
+  public firstMessage: Message;
+  public activeUserName = '';
+  public users = [];
   public users$;
   public activeChat$;
-  constructor(public usersService: UsersService, private store: Store<{usersQueue, activeChat}>) {
+  constructor(public usersService: UsersService, private store: Store<{usersQueue, activeChat, messageQueue}>) {
     this.users$ = this.store.select('usersQueue');
     this.activeChat$ = this.store.select('activeChat');
+    this.messageQueue$ = this.store.select('messageQueue');
   }
 
   ngOnInit(): void {
-    this.usersInfo = this.usersService.getUser();
+    this.activeChat$.subscribe(value => {
+      if (value.name) {
+        this.activeUserName = value.name;
+        this.firstMessage = Object.assign({}, value.messages[0]);
+      }
+    });
+    this.messageQueue$.subscribe(message => {
+      this.messageQueue = message;
+    });
+    this.users$.subscribe(user => {
+      this.users = this.cloneDeep(user);
+    });
  }
 
   onClick(user) {
-    console.log(this.activeChat$.name);
-    if (user.name === this.activeChat$.name) {
+    if (user.name === this.activeUserName) {
+      this.users.map(item => {
+        if (item.name === user.name) {
+          item.messages = this.messageQueue;
+          this.store.dispatch(resetMessages());
+        }
+      });
+
+      this.store.dispatch(pushMessagesOnHold({users: this.users}));
       this.store.dispatch(deactivateChat());
+      this.activeUserName = '';
     } else {
-      this.store.dispatch(activateChat({chat: user, time: Date.now()}));
-      this.isActive = true;
+      this.store.dispatch(activateChat({chat: user}));
+      this.store.dispatch(push({message: this.firstMessage}));
       return;
     }
-  }
-
-  getActiveUserInfo(user) {
-   this.activeUserInfo = this.usersInfo.filter(current => current.name === user.name);
-   return this.activeUserInfo[0];
   }
 }

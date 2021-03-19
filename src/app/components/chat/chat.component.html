@@ -12,17 +12,19 @@
   <div class="chat__body" (keyup)="inputHandle($event)">
     <div class="name">{{(activeChat$ | async).name}}</div>
     <div class="message-list">
-      <div class="message-list__item received">
-        <div class="user-icon">{{abbr}}</div>
-        <div class="flex-column w-100">
-          <div class="item__text">{{(activeChat$ | async).firstMessage}}</div>
-          <div class="item__info">{{(activeChat$ | async).name}}<span> {{(activeChat$ | async).time | date: 'shortTime' }}</span></div>
+      <div *ngFor="let message of (messageQueue$ | async)" [ngSwitch]="message.type">
+        <div *ngSwitchCase="'RECEIVED'" class="message-list__item received">
+          <div class="user-icon">{{abbr}}</div>
+          <div class="flex-column w-100">
+            <div class="item__text">{{message.message}}</div>
+            <div class="item__info">{{message.name}}<span> {{message.time | date: 'shortTime' }}</span></div>
+          </div>
         </div>
-      </div>
-      <div *ngFor="let message of messages" class="message-list__item sent">
-        <div class="flex-column w-100">
-          <div class="item__text">{{message}}</div>
-          <div class="item__info">You<span>now</span></div>
+        <div *ngSwitchCase="'SENT'" class="message-list__item sent">
+          <div class="flex-column w-100">
+            <div class="item__text">{{message.message}}</div>
+            <div class="item__info">You<span> {{message.time | date: "shortTime"}}</span></div>
+          </div>
         </div>
       </div>
     </div>

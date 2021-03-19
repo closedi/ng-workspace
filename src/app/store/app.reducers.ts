@@ -1,17 +1,5 @@
 import {createReducer, on} from '@ngrx/store';
-import {reset, push, getUsers, activateChat, deactivateChat} from './app.actions';
-
-// export const isOpen = false;
-
-// const _isOpenReducer = createReducer(
-//   isOpen,
-//   on(toggle, state => !state),
-//   on(reset, state => isOpen)
-// );
-//
-// export function isOpenReducer(state, action): any {
-//   return _isOpenReducer(state, action);
-// }
+import {reset, push, getUsers, activateChat, deactivateChat, pushMessage, pushMessagesOnHold, resetMessages} from './app.actions';
 
 export const usersQueue = [];
 
@@ -19,6 +7,10 @@ const _usersQueueReducer = createReducer(
   usersQueue,
   on(getUsers, (state, {message}) => {
     return message;
+  }),
+
+  on(pushMessagesOnHold, (state, {users}) => {
+    return [...users];
   }),
 
   on(reset, state => [])
@@ -34,11 +26,10 @@ export const messageQueue = [];
 const _messageQueueReducer = createReducer(
   messageQueue,
   on(push, (state, {message}) => {
-    // return [...state, message].sort(((a, b) => a.time - b.time));
     return [...state, message];
   }),
 
-  on(reset, state => [])
+  on(resetMessages, state => [])
 );
 
 export function messageQueueReducer(state, action): any {
@@ -51,9 +42,14 @@ export const activeChat = {};
 
 const _activeChatReducer = createReducer(
   activeChat,
-  on(activateChat, (state, {chat, time}) => {
-    return {...chat, time};
+  on(activateChat, (state, {chat}) => {
+    return {...chat};
   }),
+
+  on(pushMessage, (state, {message}) => {
+    return {...state, messages: message};
+  }),
+
   on(deactivateChat, state => {
    return {};
   }),

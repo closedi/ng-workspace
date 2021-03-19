@@ -64,6 +64,7 @@
           padding: 10px;
           max-width: 60%;
           word-wrap: break-word;
+          width: max-content;
 
           &.received {
             align-items: flex-end;
@@ -71,8 +72,7 @@
 
           &.sent {
             flex-direction: column;
-            align-self: flex-end;
-            justify-content: flex-end;
+            margin-left: auto;
             padding-right: 20px;
 
             .item__info {
@@ -80,6 +80,7 @@
               align-self: flex-end;
             }
             .item__text {
+              width: auto;
               text-align: right;
               border-radius: 10px 10px 0 10px;
             }

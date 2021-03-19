@@ -10,14 +10,17 @@ import {deactivateChat} from '../../store/app.actions';
 })
 export class UserPanelComponent implements OnInit {
   public activeChat$;
-  public get abbr(): string {
-    let abbr;
-    this.activeChat$.subscribe(value => {
-      const name = value.name.split(' ');
-      abbr = (name.length > 1) ?  (name[0].charAt(0) + name[1].charAt(0)).toUpperCase() : name[0].charAt(0).toUpperCase();
-    });
-    return abbr;
-  }
+  public abbr = '';
+  // public get abbr(): string {
+  //   if (this.activeChat$) {
+  //     let abbr;
+  //     this.activeChat$.subscribe(value => {
+  //       const name = value.name.split(' ');
+  //       abbr = (name.length > 1) ?  (name[0].charAt(0) + name[1].charAt(0)).toUpperCase() : name[0].charAt(0).toUpperCase();
+  //     });
+  //     return abbr;
+  //   }
+  // }
 
   constructor(private usersService: UsersService, private store: Store<{activeChat}>) {
     this.activeChat$ = this.store.select('activeChat');
@@ -26,6 +29,12 @@ export class UserPanelComponent implements OnInit {
   @Input() public activeUser;
 
   ngOnInit(): void {
+    this.activeChat$.subscribe(value => {
+      if (value.name) {
+        const name = value.name.split(' ');
+        this.abbr = (name.length > 1) ?  (name[0].charAt(0) + name[1].charAt(0)).toUpperCase() : name[0].charAt(0).toUpperCase();
+      }
+    });
   }
 
   deleteCurrentChat(): void {

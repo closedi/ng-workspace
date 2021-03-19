@@ -16,3 +16,58 @@
     grid-area: main;
   }
 }
+
+.side {
+  grid-area: side;
+  margin: 0 10px 10px 10px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .history {
+    height: 60px;
+    width: 100%;
+    padding: 15px 0 0 10px;
+    border-top: 2px solid #e0dada;
+
+    &:before {
+      content: '';
+      margin: 0 auto;
+      display: block;
+      text-align: center;
+      width: 30px;
+      border-bottom: 2px solid black;
+    }
+  }
+
+}
+
+
+.main {
+  grid-area: main;
+  display: grid;
+  height: 100%;
+  margin: 0;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  grid-gap: 0;
+  grid-template-areas:
+  "user-panel user-panel"
+  "chat empty";
+
+  @media (max-width: 767px) {
+    grid-template-areas:
+      "user-panel user-panel"
+      "chat chat";
+  }
+
+  .grid-chat {
+    grid-area: chat;
+    margin: 10px 0;
+  }
+  .grid-user-panel {
+    grid-area: user-panel;
+  }
+
+}

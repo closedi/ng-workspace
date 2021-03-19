@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
-import {getUsers, push} from '../store/app.actions';
+import {getUsers, push, pushMessage} from '../store/app.actions';
 
 @Injectable({
   providedIn: 'root'

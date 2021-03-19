@@ -1,7 +1,9 @@
 <div class="container">
 <section class="side border">
+  <div>
   <app-side-header-icons></app-side-header-icons>
   <app-customers-list></app-customers-list>
+  </div>
   <div class="history">History</div>
 </section>
 <section *ngIf="(activeChat$ | async).name" class="main">

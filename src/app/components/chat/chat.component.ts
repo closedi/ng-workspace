@@ -1,7 +1,8 @@
 import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {WebsocketService} from '../../services/websocket.service';
 import {Store} from '@ngrx/store';
-import {push} from '../../store/app.actions';
+import {push, pushMessage} from '../../store/app.actions';
+import {Message} from '../../../message';
 
 @Component({
   selector: 'app-chat',
@@ -9,25 +10,30 @@ import {push} from '../../store/app.actions';
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit, AfterViewInit {
+  public chatStartedAt = Date.now();
   public userInput = '';
-  public messages = [];
+  public abbr = '';
+  public userName = '';
+  public messages: Message[] = [];
+  public messageQueue$;
   public activeChat$;
   @ViewChild('focus') element: ElementRef;
-  public get abbr(): string {
-      let abbr;
-      this.activeChat$.subscribe(value => {
-        const name = value.name.split(' ');
-        abbr = (name.length > 1) ?  (name[0].charAt(0) + name[1].charAt(0)).toUpperCase() : name[0].charAt(0).toUpperCase();
-    });
-      return abbr;
-  }
 
-  constructor(private ws: WebsocketService, private store: Store<{activeChat}>) {
+  constructor(private ws: WebsocketService, private store: Store<{activeChat, messageQueue}>) {
     this.activeChat$ = this.store.select('activeChat');
+    this.messageQueue$ = this.store.select('messageQueue');
   }
 
   ngOnInit(): void {
     this.ws.storePushInit();
+    this.activeChat$.subscribe(value => {
+      if (value.name) {
+        this.userName = value.name;
+        const name = value.name.split(' ');
+        this.abbr = (name.length > 1) ?  (name[0].charAt(0) + name[1].charAt(0)).toUpperCase() : name[0].charAt(0).toUpperCase();
+        this.messages = value.messages.slice();
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -35,15 +41,15 @@ export class ChatComponent implements OnInit, AfterViewInit {
   }
 
   inputHandle(event) {
-    console.log(this.messages)
     const trimmed = this.userInput.trim();
     this.element.nativeElement.focus();
     if (trimmed) {
       if (event.type === 'click' || (event.keyCode === 13 && !event.shiftKey)) {
-        this.messages.push(this.userInput);
+        console.log(this.messages);
         this.userInput = '';
-        this.store.dispatch(push({message: {type: 'SENT', name: this.activeChat$.name, message: trimmed, time: Date.now()}}));
-        this.ws.send({name: this.activeChat$.name, message: trimmed});
+        this.messages.push({type: 'SENT', name: this.userName, message: trimmed, time: Date.now()});
+        this.store.dispatch(push({message: {type: 'SENT', name: this.userName, message: trimmed, time: Date.now()}}));
+        this.ws.send({type: 'SENT', name: this.userName, message: trimmed, time: Date.now()});
       }
     } else {
       this.userInput = '';

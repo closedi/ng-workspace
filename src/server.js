@@ -22,7 +22,6 @@ const request = new Promise((resolve, reject) => {
 request
   .then((value) => {
   users = value;
-  console.log(users)
 })
   .catch(err => console.log(err))
   .then(() => webSocket())
@@ -54,12 +53,14 @@ const CUSTOMER_SAYS = [
   'It\'s all, thanks',
 ]
 
-function randomMessage(of_times) {
+function randomAnswer(of_times) {
   return CUSTOMER_SAYS[Math.round(Math.random() * of_times)]
 }
 
 function currentMessages() {
-  users.map((user) => user.firstMessage = randomMessage(3))
+  users.map((user) => {
+    user.messages = [{type: 'RECEIVED', name: user.name, message: randomAnswer(3), time: Date.now()}];
+  })
   return JSON.stringify(users);
 }
 
@@ -72,7 +73,7 @@ function webSocket() {
     });
     function processMessage(message) {
       const messageParsed = JSON.parse(message);
-      const responseMessage = JSON.stringify({info: messageParsed, message:randomMessage(3)})
+      const responseMessage = JSON.stringify({type: 'RECEIVED', name: messageParsed.name, message: randomAnswer(3), time: Date.now()})
       ws.send(responseMessage);
     }
   });
