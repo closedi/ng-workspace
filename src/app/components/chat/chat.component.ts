@@ -1,7 +1,13 @@
-import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {WebsocketService} from '../../services/websocket.service';
 import {Store} from '@ngrx/store';
-import {push, pushMessage} from '../../store/app.actions';
+import {push} from '../../store/app.actions';
 import {Message} from '../../../message';
 
 @Component({
@@ -10,14 +16,16 @@ import {Message} from '../../../message';
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit, AfterViewInit {
-  public chatStartedAt = Date.now();
+  public scrollState = false;
   public userInput = '';
   public abbr = '';
   public userName = '';
   public messages: Message[] = [];
   public messageQueue$;
   public activeChat$;
-  @ViewChild('focus') element: ElementRef;
+  public scrollNode;
+  @ViewChild('scroll') scroll: ElementRef;
+  @ViewChild('focus') focus: ElementRef;
 
   constructor(private ws: WebsocketService, private store: Store<{activeChat, messageQueue}>) {
     this.activeChat$ = this.store.select('activeChat');
@@ -32,20 +40,23 @@ export class ChatComponent implements OnInit, AfterViewInit {
         const name = value.name.split(' ');
         this.abbr = (name.length > 1) ?  (name[0].charAt(0) + name[1].charAt(0)).toUpperCase() : name[0].charAt(0).toUpperCase();
         this.messages = value.messages.slice();
+        this.scrollState = false;
       }
     });
   }
 
   ngAfterViewInit(): void {
-    this.element.nativeElement.focus();
+    this.focus.nativeElement.focus();
+    this.scrollNode = this.scroll.nativeElement;
+    this.scrollTo();
   }
 
-  inputHandle(event) {
+  inputHandle(event): void {
+    this.scrollState = false;
     const trimmed = this.userInput.trim();
-    this.element.nativeElement.focus();
+    this.focus.nativeElement.focus();
     if (trimmed) {
       if (event.type === 'click' || (event.keyCode === 13 && !event.shiftKey)) {
-        console.log(this.messages);
         this.userInput = '';
         this.messages.push({type: 'SENT', name: this.userName, message: trimmed, time: Date.now()});
         this.store.dispatch(push({message: {type: 'SENT', name: this.userName, message: trimmed, time: Date.now()}}));
@@ -54,5 +65,16 @@ export class ChatComponent implements OnInit, AfterViewInit {
     } else {
       this.userInput = '';
     }
+  }
+
+  scrollTo(): void {
+    const element = this.scrollNode;
+    if (element && !this.scrollState) {
+      element.scrollTo(0, element.scrollHeight);
+    }
+  }
+
+  stopScroll(): boolean {
+    return this.scrollState = true;
   }
 }

@@ -67,6 +67,7 @@ function currentMessages() {
 function webSocket() {
   wss.on('connection', ws => {
     ws.send(currentMessages());
+
     ws.on('message', processMessage);
     ws.on('close', () => {
       ws.off('message', processMessage);

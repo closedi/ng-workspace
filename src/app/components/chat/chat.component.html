@@ -11,13 +11,14 @@
   </div>
   <div class="chat__body" (keyup)="inputHandle($event)">
     <div class="name">{{(activeChat$ | async).name}}</div>
-    <div class="message-list">
+    <div class="message-list" #scroll (wheel)="stopScroll()" (mousedown)="stopScroll()" [scrollTop]="scrollTo()">
       <div *ngFor="let message of (messageQueue$ | async)" [ngSwitch]="message.type">
         <div *ngSwitchCase="'RECEIVED'" class="message-list__item received">
           <div class="user-icon">{{abbr}}</div>
           <div class="flex-column w-100">
             <div class="item__text">{{message.message}}</div>
-            <div class="item__info">{{message.name}}<span> {{message.time | date: 'shortTime' }}</span></div>
+              <div class="item__info">{{message.name}}<span *ngIf="(messageQueue$ | async)[(messageQueue$ | async).length - 1] === message">
+                {{message.time | date: 'shortTime'}}</span></div>
           </div>
         </div>
         <div *ngSwitchCase="'SENT'" class="message-list__item sent">

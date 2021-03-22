@@ -1,7 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {UsersService} from '../../services/users.service';
 import {Store} from '@ngrx/store';
-import {activateChat, deactivateChat, push, pushMessage, pushMessagesOnHold, reset, resetMessages} from '../../store/app.actions';
+import {
+  activateChat,
+  deactivateChat,
+  push,
+  pushMessagesOnHold,
+  resetMessages
+} from '../../store/app.actions';
 import {Message} from '../../../message';
 
 @Component({
@@ -9,11 +15,12 @@ import {Message} from '../../../message';
   templateUrl: './customers-list.component.html',
   styleUrls: ['./customers-list.component.scss']
 })
+
 export class CustomersListComponent implements OnInit{
   private cloneDeep = require('lodash.clonedeep');
   public messageQueue: Message[] = [];
   public messageQueue$;
-  public firstMessage: Message;
+  public firstMessage = [];
   public activeUserName = '';
   public users = [];
   public users$;
@@ -27,16 +34,22 @@ export class CustomersListComponent implements OnInit{
   ngOnInit(): void {
     this.activeChat$.subscribe(value => {
       if (value.name) {
-        this.activeUserName = value.name;
-        this.firstMessage = Object.assign({}, value.messages[0]);
+        if (this.activeUserName !== value.name) {
+          this.users.map(item => {
+            if (item.name === this.activeUserName) {
+              item.messages = this.messageQueue;
+            }});
+          this.store.dispatch(pushMessagesOnHold({users: this.users}));
+          this.store.dispatch(resetMessages());
+          this.activeUserName = value.name;
+        }
+        value.messages.map(message => this.firstMessage.push(message));
       }
     });
     this.messageQueue$.subscribe(message => {
       this.messageQueue = message;
     });
-    this.users$.subscribe(user => {
-      this.users = this.cloneDeep(user);
-    });
+    this.users$.subscribe(user => this.users = this.cloneDeep(user));
  }
 
   onClick(user) {
@@ -44,17 +57,17 @@ export class CustomersListComponent implements OnInit{
       this.users.map(item => {
         if (item.name === user.name) {
           item.messages = this.messageQueue;
-          this.store.dispatch(resetMessages());
         }
       });
-
       this.store.dispatch(pushMessagesOnHold({users: this.users}));
       this.store.dispatch(deactivateChat());
+      this.store.dispatch(resetMessages());
       this.activeUserName = '';
     } else {
-      this.store.dispatch(activateChat({chat: user}));
-      this.store.dispatch(push({message: this.firstMessage}));
-      return;
-    }
+        this.store.dispatch(activateChat({chat: user}));
+        this.store.dispatch(push({message: this.firstMessage.slice()}));
+        this.firstMessage = [];
+        return;
+     }
   }
 }

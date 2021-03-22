@@ -1,4 +1,5 @@
 @import "src/app/app.component";
+@import "src/app/components/customers-list/customers-list.component";
 
 
 .customer__icon {
@@ -50,8 +51,9 @@
   }
 
   .info__duration {
+    width: 45px;
     justify-self: flex-end;
-    margin: auto;
+    margin: 0 10px;
     font-size: .8rem;
   }
 }

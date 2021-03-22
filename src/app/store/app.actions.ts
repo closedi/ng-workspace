@@ -10,4 +10,5 @@ export const pushMessage = createAction('pushMessage', props<{ message }>());
 export const pushMessagesOnHold = createAction('pushMessagesOnHold', props<{ users }>());
 export const activateChat = createAction('activeChat', props<{chat}>());
 export const deactivateChat = createAction('deactiveChat');
+export const destroyChat = createAction('destroyChat', props<{name}>());
 

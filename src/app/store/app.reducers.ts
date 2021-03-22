@@ -1,5 +1,5 @@
 import {createReducer, on} from '@ngrx/store';
-import {reset, push, getUsers, activateChat, deactivateChat, pushMessage, pushMessagesOnHold, resetMessages} from './app.actions';
+import {reset, push, getUsers, activateChat, deactivateChat, pushMessage, pushMessagesOnHold, resetMessages, destroyChat} from './app.actions';
 
 export const usersQueue = [];
 
@@ -12,6 +12,8 @@ const _usersQueueReducer = createReducer(
   on(pushMessagesOnHold, (state, {users}) => {
     return [...users];
   }),
+
+  on(destroyChat, (state, {name}) => state.filter(user => user.name !== name)),
 
   on(reset, state => [])
 );
@@ -26,7 +28,11 @@ export const messageQueue = [];
 const _messageQueueReducer = createReducer(
   messageQueue,
   on(push, (state, {message}) => {
-    return [...state, message];
+    if (message instanceof Array) {
+      return [...state, ...message];
+    } else {
+      return [...state, message];
+    }
   }),
 
   on(resetMessages, state => [])
@@ -50,8 +56,12 @@ const _activeChatReducer = createReducer(
     return {...state, messages: message};
   }),
 
-  on(deactivateChat, state => {
+  on(deactivateChat, () => {
    return {};
+  }),
+
+  on(destroyChat, () => {
+    return {};
   }),
 );
 export function activeChatReducer(state, action): any {

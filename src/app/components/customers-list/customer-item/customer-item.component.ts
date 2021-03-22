@@ -1,6 +1,6 @@
-import {Component, Input, OnChanges, OnInit, Output, SimpleChanges, EventEmitter} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {UsersService} from '../../../services/users.service';
+import {interval} from 'rxjs';
 
 @Component({
   selector: 'app-customer-item',
@@ -8,20 +8,28 @@ import {UsersService} from '../../../services/users.service';
   styleUrls: ['./customer-item.component.scss']
 })
 export class CustomerItemComponent implements OnInit {
+  public userWaiting = 0;
+  private interval = interval(1);
   public activeUser$;
+
   public get abbr(): string {
     if (this.activeUser$.name) {
       const name = this.activeUser$.name.split(' ');
-      return (name.length > 1) ?  name[0].charAt(0) + name[1].charAt(0) : name[0].charAt(0);
+      return (name.length > 1) ? name[0].charAt(0) + name[1].charAt(0) : name[0].charAt(0);
     }
   }
 
-  constructor(private store: Store<{activeChat}>, private users: UsersService) {
+  constructor(private store: Store<{ activeChat }>) {
     this.activeUser$ = this.store.select('activeChat');
   }
 
   @Input() public user;
 
   ngOnInit(): void {
+    this.interval.subscribe(
+      () => {
+          this.userWaiting = Date.now() - this.user.messages[this.user.messages.length - 1].time;
+      }
+    );
   }
 }

@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {UsersService} from '../../services/users.service';
 import {Store} from '@ngrx/store';
-import {deactivateChat} from '../../store/app.actions';
+import {deactivateChat, destroyChat} from '../../store/app.actions';
 
 @Component({
   selector: 'app-user-panel',
@@ -9,6 +9,7 @@ import {deactivateChat} from '../../store/app.actions';
   styleUrls: ['./user-panel.component.scss']
 })
 export class UserPanelComponent implements OnInit {
+  public activeChatName = '';
   public activeChat$;
   public abbr = '';
   // public get abbr(): string {
@@ -35,9 +36,12 @@ export class UserPanelComponent implements OnInit {
         this.abbr = (name.length > 1) ?  (name[0].charAt(0) + name[1].charAt(0)).toUpperCase() : name[0].charAt(0).toUpperCase();
       }
     });
+    this.activeChat$.subscribe(value => {
+      this.activeChatName = value.name;
+    });
   }
 
   deleteCurrentChat(): void {
-    this.store.dispatch(deactivateChat());
+    this.store.dispatch(destroyChat({name: this.activeChatName}));
   }
 }
