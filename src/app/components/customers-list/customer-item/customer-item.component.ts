@@ -9,7 +9,7 @@ import {interval} from 'rxjs';
 })
 export class CustomerItemComponent implements OnInit {
   public userWaiting = 0;
-  private interval = interval(1);
+  private interval = interval(0);
   public activeUser$;
 
   public get abbr(): string {
