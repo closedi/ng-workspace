@@ -7,7 +7,12 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "dockerize": "npm run docker-server && npm run docker-front",
+    "docker-server": "docker run -d -p 8333:8333 ng-workspace:server",
+    "predocker-server": "docker build -t ng-workspace:server -f Dockerfile-server .",
+    "docker-front": "docker run -d -p 4200:80 ng-workspace:front",
+    "predocker-front": "docker build -t ng-workspace:front ."
   },
   "private": true,
   "dependencies": {
@@ -35,6 +40,7 @@
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.20.6",
     "codelyzer": "^6.0.0",
+    "concurrently": "^6.0.0",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~6.1.0",

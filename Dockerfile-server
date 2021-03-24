@@ -1,0 +1,7 @@
+FROM node:12.7-alpine
+WORKDIR /usr/src/app
+RUN npm install ws
+COPY server.js .
+EXPOSE 8333
+ENTRYPOINT ["node", "server.js"]
+
